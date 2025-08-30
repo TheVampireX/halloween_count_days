@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cuenta regresiva para Halloween</title>
+  <meta name="description" content="Cuenta regresiva elegante en días para Halloween con estilo oscuro, gradientes naranja/morado y glasmorfismo." />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --fg:#f5f5f7;
+      --orange:#ff7a00;
+      --green:#00ff44;
+      --purple:#5a00ff;
+      --black:#000000;
+      --glass: rgba(0,0,0,0.55);
+      --border: rgba(255,255,255,0.08);
+      --muted: #b8b8c3;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background: var(--bg); color: var(--fg); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; overflow:hidden;
+    }
+    .stage{
+      position:relative; width:100%; height:100%; display:grid; place-items:center; padding: clamp(16px, 3vw, 40px);
+      background:
+        radial-gradient(60vmax 60vmax at 10% 15%, rgba(255,122,0,0.18), transparent 60%),
+        radial-gradient(60vmax 60vmax at 85% 20%, rgba(90,0,255,0.20), transparent 60%),
+        radial-gradient(80vmax 60vmax at 50% 110%, rgba(255,122,0,0.12), transparent 60%),
+        linear-gradient(180deg, #0b0b0f 0%, #0a0a12 100%);
+    }
+    .grain{position:absolute; inset:0; pointer-events:none; opacity:.14; mix-blend:overlay; background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.6"/></svg>');}
+
+    .card{
+      position:relative;
+      max-width:min(840px, 92vw);
+      width:100%;
+      border-radius:28px;
+      padding: clamp(20px, 5vw, 40px);
+      background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.45));
+      box-shadow: 0 10px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
+      backdrop-filter: blur(14px) saturate(130%);
+      -webkit-backdrop-filter: blur(14px) saturate(130%);
+      border:1px solid var(--border);
+      text-align:center;
+    }
+
+    .eyebrow{font: 600 12px/1.1 Inter, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--muted);}
+    h1{
+      font-family: 'Unbounded', system-ui, sans-serif; font-weight:800; margin:.5rem 0 1rem; line-height:1.05;
+      font-size: clamp(28px, 4.5vw, 56px);
+      background: linear-gradient(90deg, var(--fg), #f0e6ff);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .purpose{color:var(--muted); font-size: clamp(14px, 1.4vw, 18px); max-width: 70ch; margin-left:auto; margin-right:auto;}
+
+    .counter{
+      display:flex; align-items:flex-end; justify-content:center; gap: 16px; flex-wrap:wrap; margin-top: clamp(18px, 3vw, 28px);
+    }
+    .big-number{
+      font-family:'Unbounded', system-ui, sans-serif; font-weight:800; letter-spacing:-0.02em;
+      font-size: clamp(64px, 13vw, 180px); line-height:0.9;
+      color: var(--orange);
+      text-shadow: 0 0 6px var(--orange);
+    }
+
+    .label{
+      font-weight:600; font-size: clamp(16px, 1.8vw, 22px); color:#e9e7ff; margin-bottom: 10px;
+    }
+    .sub{ color: var(--muted); font-size:14px}
+
+    .badge{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px; border:1px solid var(--border); background: rgba(255,255,255,0.02); margin-top:18px}
+    .dot{ width:10px; height:10px; border-radius:50%; background: radial-gradient(circle at 30% 30%, var(--orange), var(--purple)); box-shadow:0 0 18px rgba(255,122,0,0.45)}
+
+    .footer{margin-top: 26px; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; color:var(--muted); font-size:13px}
+    .pill{padding:.5rem .9rem; border-radius:999px; border:1px solid var(--border); background: rgba(255,255,255,0.02)}
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+    @media (max-width:480px){ .badge{display:none} }
+
+    /* EXTRA: emojis flotando */
+    .emoji {
+      position: absolute;
+      font-size: 2rem;
+      animation: float 8s linear infinite;
+      opacity: 0.8;
+    }
+    @keyframes float {
+      0% { transform: translate(var(--x-start), 100vh) scale(1); opacity: 0; }
+      10% { opacity: 0.9; }
+      50% { transform: translate(var(--x-mid), 50vh) scale(1.2); }
+      100% { transform: translate(var(--x-end), -10vh) scale(1); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" role="main">
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- emojis flotando -->
+    <div class="emoji" style="--x-start:0vw; --x-mid:10vw; --x-end:5vw; left:10%; animation-delay:0s;">🎃</div>
+    <div class="emoji" style="--x-start:20vw; --x-mid:30vw; --x-end:25vw; left:30%; animation-delay:2s;">👻</div>
+    <div class="emoji" style="--x-start:50vw; --x-mid:40vw; --x-end:55vw; left:60%; animation-delay:4s;">🦇</div>
+    <div class="emoji" style="--x-start:70vw; --x-mid:80vw; --x-end:75vw; left:80%; animation-delay:6s;">🕸️</div>
+    <div class="emoji" style="--x-start:15vw; --x-mid:25vw; --x-end:20vw; left:15%; animation-delay:3s;">🎃</div>
+    <div class="emoji" style="--x-start:35vw; --x-mid:45vw; --x-end:40vw; left:35%; animation-delay:5s;">👻</div>
+
+    <section class="card" aria-labelledby="titulo">
+      <span class="eyebrow">Edicto del Príncipe de la Oscuridad</span>
+      <h1 id="titulo">Cuenta regresiva oficial para Halloween</h1>
+      <p class="purpose">Propósito: anunciar, con solemnidad y estilo, <strong>cuántos días faltan para Halloween</strong>. La tradición manda puntualidad; la noche exige preparación.</p>
+
+      <div class="counter" aria-live="polite">
+        <div>
+          <div id="days" class="big-number" aria-describedby="dias-label">0</div>
+          <div id="dias-label" class="label">días</div>
+        </div>
+        <div class="badge" aria-hidden="true">
+          <span class="dot"></span>
+          <span>31 de octubre — ¡Let It Be The Nightmare!</span>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="pill">⌛ Se actualiza automáticamente</div>
+        <div>Hecho para espíritus conservadores del buen gusto: Terror, Oscuridad y Halloween 🎃</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      const daysEl = document.getElementById('days');
+
+      function nextHalloweenBase(year){
+        return new Date(year, 9, 31, 0, 0, 0, 0);
+      }
+
+      function getTarget(){
+        const now = new Date();
+        let target = nextHalloweenBase(now.getFullYear());
+        if(now > target){
+          target = nextHalloweenBase(now.getFullYear() + 1);
+        }
+        return target;
+      }
+
+      function wholeDaysBetween(a, b){
+        const MS_PER_DAY = 24*60*60*1000;
+        const diff = b.getTime() - a.getTime();
+        return Math.max(0, Math.ceil(diff / MS_PER_DAY));
+      }
+
+      let target = getTarget();
+
+      function tick(){
+        const now = new Date();
+        const days = wholeDaysBetween(now, target);
+        daysEl.textContent = days.toString();
+        if(days === 0 && now > target){
+          target = getTarget();
+        }
+      }
+
+      tick();
+      setInterval(tick, 60*1000);
+    })();
+  </script>
+</body>
+</html>
